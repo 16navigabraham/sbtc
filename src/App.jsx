@@ -34,39 +34,8 @@ const useTurnkeyWallet = () => {
 */
 import React, { useState } from 'react';
 import { Send, Wallet, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { useTurnkeyWallet } from './hooks/useTurnkeyWallet';
 
-// Inline hook - no CSP issues
-function useTurnkeyWallet() {
-  const [wallet, setWallet] = useState(null);
-  const [loading, setLoading] = useState(false);
-  
-  const connect = async () => {
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setWallet({
-      address: 'ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC',
-      balance: '2.5',
-      network: 'testnet'
-    });
-    setLoading(false);
-  };
-  
-  const signTransaction = async (txData) => {
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 2000));
-    const newBalance = (parseFloat(wallet.balance) - parseFloat(txData.amount)).toFixed(6);
-    setWallet(prev => ({ ...prev, balance: newBalance }));
-    setLoading(false);
-    return {
-      txid: '0x' + Array.from({ length: 64 }, () => 
-        Math.floor(Math.random() * 16).toString(16)
-      ).join(''),
-      success: true
-    };
-  };
-  
-  return { wallet, loading, connect, signTransaction };
-}
 
 export default function SBTCQuickSend() {
   const { wallet, loading, connect, signTransaction } = useTurnkeyWallet();
