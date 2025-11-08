@@ -44,37 +44,27 @@ export default function SBTCQuickSend() {
   const [txStatus, setTxStatus] = useState(null);
   const [txHash, setTxHash] = useState('');
 
-  const handleSend = async () => {
-    if (!recipient || !amount || parseFloat(amount) <= 0) {
-      setTxStatus('error');
-      return;
-    }
-    
-    setTxStatus('pending');
-    
-    try {
-      const result = await signTransaction({
-        recipient,
-        amount,
-        asset: 'sBTC'
-      });
-      
-      if (result.success) {
-        setTxHash(result.txid);
-        setTxStatus('success');
-        setRecipient('');
-        setAmount('');
-      }
-    } catch (error) {
-      setTxStatus('error');
-    }
-  };
+  
 
-  if (!wallet) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full border border-orange-100">
-          <div className="text-center mb-8">
+ 
+    const handleSend = async () => {
+        try {
+          setTxStatus(null);
+          const result = await signTransaction({ recipient, amount });
+          if (result.success) {
+            setTxStatus('success');
+            setTxHash(result.txid);
+          }
+        } catch (error) {
+          setTxStatus('error');
+        }
+      };
+    
+      if (!wallet) {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full border border-orange-100">
+              <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500 to-purple-600 rounded-full mb-4">
               <Wallet className="w-10 h-10 text-white" />
             </div>
