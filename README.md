@@ -1,4 +1,4 @@
-# sBTC Quick Send 🚀
+# sBTC Quick Send 
 
 <div align="center">
 
